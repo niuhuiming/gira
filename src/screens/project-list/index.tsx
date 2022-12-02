@@ -1,27 +1,41 @@
-import { useEffect, useState } from "react";
-import { SearchPanel } from "./search-panel";
+import { useState, useEffect } from "react";
+import { cleanObject } from "utils";
 import { List } from "./list";
-import { cleanObject, useDebounce, useMount } from "../../utils";
-import { http } from "../../utils/http";
+import { SearchPannel } from "./search-panel";
+import { useMount, useDebounce } from "hooks";
+import { useHttp } from "utils/http";
+import styled from "@emotion/styled";
 
 export const ProjectListScreen = () => {
-  const [param, setParam] = useState({ name: "", personId: "" });
+  const [param, setParam] = useState({
+    name: "",
+    personId: "",
+  });
   const [users, setUsers] = useState([]);
   const [list, setList] = useState([]);
-  const debouncedParam = useDebounce(param, 200);
+  const debounceParam = useDebounce(param, 200);
+  const client = useHttp();
 
   useEffect(() => {
-    http("projects", { data: cleanObject(debouncedParam) }).then(setList);
-  }, [debouncedParam]);
-
+    client("projects", { data: cleanObject(debounceParam) }).then(setList);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debounceParam]);
   useMount(() => {
-    http("users", {}).then(setUsers);
+    client("users").then(setUsers);
   });
-
   return (
-    <div>
-      <SearchPanel users={users} param={param} setParam={setParam} />
-      <List users={users} list={list} />
-    </div>
+    <Container>
+      <h1>项目列表</h1>
+      <SearchPannel
+        users={users}
+        param={param}
+        setParam={setParam}
+      ></SearchPannel>
+      <List users={users} list={list}></List>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  padding: 3.2rem;
+`;

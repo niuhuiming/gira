@@ -53,5 +53,10 @@
       "organization": "外卖组",
       "created": 1546900800000
     }
-  ]
+  ],
+  "me": {
+    "user": {
+      "name": "user01"
+    }
+  }
 }

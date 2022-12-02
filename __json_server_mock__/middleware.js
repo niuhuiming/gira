@@ -4,6 +4,9 @@ module.exports = (req, res, next) => {
     if (req.body.username === "user01" && req.body.password === "123") {
       return res.status(200).json({
         user: {
+          user: {
+            name: "user01",
+          },
           token: "123",
         },
       });
