@@ -12,14 +12,12 @@ export const isVoid = (value: unknown) =>
 /**
  * 过滤对象的空值
  */
-export const cleanObject = (object: object) => {
+export const cleanObject = (object: { [key: string]: unknown }) => {
   // 在一个函数里，改变传入的对象是不好的
   const result = { ...object };
   Object.keys(result).forEach((key) => {
-    // @ts-ignore
     const value = result[key];
     if (isFalsy(value)) {
-      // @ts-ignore
       delete result[key];
     }
   });
