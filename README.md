@@ -1,46 +1,77 @@
-# Getting Started with Create React App
+##### 创建项目
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+```bash
+npx create-react-app jira --template typescript
+```
 
-## Available Scripts
+##### 使用 commitlint
 
-In the project directory, you can run:
+网站：https://github.com/conventional-changelog/commitlint
 
-### `npm start`
+1. `npm install --save-dev @commitlint/config-conventional @commitlint/cli`
+2. `echo "module.exports = {extends: ['@commitlint/config-conventional']}" > commitlint.config.js`
+3. `npm install husky --save-dev`
+4. `npx husky install`
+5. `npx husky add .husky/commit-msg  'npx --no -- commitlint --edit ${1}'`
+6. 将文件`commitlint.config.js`编码改为`UTF-8`
+7. 此时提交信息不能再随便填写，配置完成
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+commitlint 提交规范：
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+| 类型     | 描述                                                   |
+| -------- | ------------------------------------------------------ |
+| build    | 编译相关的修改，例如发布版本、对项目构建或者依赖的改动 |
+| chore    | 其他修改，比如改变构建流程，或者增加依赖库、工具等     |
+| ci       | 持续集成修改                                           |
+| docs     | 文档修改                                               |
+| **feat** | 新特性，新功能                                         |
+| **fix**  | 修改 bug                                               |
+| pref     | 优化相关，比如提升性能、体验                           |
+| refactor | 代码重构                                               |
+| revert   | 回滚到上一版本                                         |
+| style    | 代码格式修改，注意不是 css 修改                        |
+| test     | 测试用例修改                                           |
 
-### `npm test`
+##### 使用 prettier
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+网站：https://prettier.io/docs/en/install.html#eslint-and-other-linters
 
-### `npm run build`
+1. `npx mrm@2 lint-staged`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. `npm install --save-dev lint-staged`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. `echo {}> .prettierrc.json`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+4. 将文件`.prettierrc.json`编码改为`UTF-8`
 
-### `npm run eject`
+5. 创建文件`.prettierignore`，添加如下内容：
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+   ```
+   # Ignore artifacts:
+   build
+   coverage
+   ```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+6. `npm i eslint-config-prettier`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+7. 在`package.json`中添加`prettier`：
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+   ```json
+   "eslintConfig": {
+     "extends": [
+       "react-app",
+       "react-app/jest",
+       "prettier"
+     ]
+   },
+   ```
 
-## Learn More
+8. 在`package.json`中配置如下设置：
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+   ```json
+   "lint-staged": {
+     "*.{js,css,md,ts,tsx}": "prettier --write"
+   }
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+9. 此时提交代码就会自动格式化，配置完成
